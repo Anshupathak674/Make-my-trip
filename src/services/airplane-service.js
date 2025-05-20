@@ -25,7 +25,7 @@ async function createAirplane(data) {
 
 async function getAirplanes() {
   try {
-    const airplanes = await airplaneRepository.getAll;
+    const airplanes = await airplaneRepository.getAll();
     return airplanes;
   } catch (error) {
     throw new AppError(
@@ -34,7 +34,27 @@ async function getAirplanes() {
     );
   }
 }
+
+async function getAirplane(id) {
+  try {
+    const airplane = await airplaneRepository.get(id);
+    return airplane;
+  } catch (error) {
+    if (error.statuscode === StatusCodes.NOT_FOUND) {
+      throw new AppError(
+        "The requested plane is not present",
+        error.statuscode,
+      );
+    }
+    throw new AppError(
+      "Cannot fetch data of the requested airplanes",
+      StatusCodes.INTERNAL_SERVER_ERROR,
+    );
+  }
+}
+
 module.exports = {
   createAirplane,
   getAirplanes,
+  getAirplane,
 };
