@@ -1,14 +1,16 @@
 const { StatusCodes } = require("http-status-codes");
 const { ErrorResponse } = require("../utils/common");
-function validateAirplaneCreate(req, res, next) {
+function validateAirportCreate(req, res, next) {
   var notFoundParameter;
-  if (!req.body.modelNumber) {
-    notFoundParameter = "Model Number";
-  } else if (!req.body.capacity) {
-    notFoundParameter = "Capacity";
+  if (!req.body.name) {
+    notFoundParameter = "Name";
+  } else if (!req.body.code) {
+    notFoundParameter = "Code";
+  } else if (!req.body.cityId) {
+    notFoundParameter = "City Id";
   }
   if (notFoundParameter) {
-    ErrorResponse.message = "Something went wrong while creating the plane";
+    ErrorResponse.message = "Something went wrong while creating the airport";
     ErrorResponse.error = {
       explanation: `${notFoundParameter} not found in the incoming request`,
     };
@@ -18,5 +20,5 @@ function validateAirplaneCreate(req, res, next) {
 }
 
 module.exports = {
-  validateAirplaneCreate,
+  validateAirportCreate,
 };

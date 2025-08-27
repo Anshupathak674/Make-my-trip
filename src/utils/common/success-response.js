@@ -1,8 +1,8 @@
 const success = {
-    success: false,
-    message: 'Successfully executed the request',
-    data:{},
-    error:{}
-}
+  success: true,
+  message: "Successfully executed the request",
+  data: {},
+  error: {},
+};
 
-module.exports = success
+module.exports = success;

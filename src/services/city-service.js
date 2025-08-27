@@ -1,60 +1,65 @@
 const { StatusCodes } = require("http-status-codes");
-const { AirplaneRepository } = require("../repositories");
+const { CityRepository } = require("../repositories");
 const AppError = require("../utils/errors/app-error");
 
-const airplaneRepository = new AirplaneRepository();
+const cityRepository = new CityRepository();
 
-async function createAirplane(data) {
+async function createCity(data) {
   try {
-    const result = await airplaneRepository.create(data);
+    const result = await cityRepository.create(data);
     return result;
   } catch (error) {
-    if (error.name === "SequelizeValidationError") {
+    console.log(error);
+    if (
+      error.name === "SequelizeValidationError" ||
+      error.name === "SequelizeUniqueConstraintError"
+    ) {
       let explanation = [];
       error.errors.forEach((err) => {
         explanation.push(err.message);
       });
       throw new AppError(explanation, StatusCodes.BAD_REQUEST);
     }
+
     throw new AppError(
-      "Cannot create a new Airplane Object",
+      "Cannot create a new city",
       StatusCodes.INTERNAL_SERVER_ERROR,
     );
   }
 }
 
-async function getAirplanes() {
+async function getCities() {
   try {
-    const airplanes = await airplaneRepository.getAll();
-    return airplanes;
+    const cities = await cityRepository.getAll();
+    return cities;
   } catch (error) {
     throw new AppError(
-      "Cannot fetch data of all the airplanes",
+      "Cannot fetch data of all the cities",
       StatusCodes.INTERNAL_SERVER_ERROR,
     );
   }
 }
 
-async function getAirplane(id) {
+async function getCity(id) {
   try {
-    const airplane = await airplaneRepository.get(id);
-    return airplane;
+    const city = await cityRepository.get(id);
+    return city;
   } catch (error) {
     if (error.statuscode === StatusCodes.NOT_FOUND) {
       throw new AppError(
-        "The requested plane is not present",
+        "The details of requested city is not present",
         error.statuscode,
       );
     }
     throw new AppError(
-      "Cannot fetch data of the requested airplanes",
+      "Cannot fetch data of the requested city",
       StatusCodes.INTERNAL_SERVER_ERROR,
     );
   }
 }
 
 module.exports = {
-  createAirplane,
-  getAirplanes,
-  getAirplane,
+  createCity,
+  getCities,
+  getCity,
 };
