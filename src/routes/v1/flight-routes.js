@@ -6,6 +6,7 @@ const { FlightController } = require("../../controllers");
 // /api/v1/flights
 router
   .post("/", FlightMiddlewares, FlightController.createFlight)
-  .get("/", FlightController.getAllFlights);
+  .get("/", FlightController.getAllFlights)
+  .get("/:id", FlightController.getFlight);
 
 module.exports = router;
