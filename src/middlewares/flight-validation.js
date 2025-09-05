@@ -37,6 +37,19 @@ function validateFlightCreate(req, res, next) {
   next();
 }
 
+function validateUpdateSeatsRequest(req, res, next) {
+  if (!req.body.seats) {
+    ErrorResponse.message =
+      "Something went wrong while updating seats in the flight";
+    ErrorResponse.error = {
+      explanation: `No of seats to be incremented or decremented not found in the incoming request`,
+    };
+    return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
+  }
+  next();
+}
+
 module.exports = {
   validateFlightCreate,
+  validateUpdateSeatsRequest,
 };
